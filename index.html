@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz cumple, Jess 🎉</title>
+  <style>
+    :root{
+      --pink:#f9a8d4; --pink-50:#fff1f2; --purple-50:#faf5ff; --blue-50:#eff6ff;
+      --indigo-200:#c7d2fe; --fuchsia-200:#f5d0fe; --rose-200:#fecdd3;
+      --shadow:0 10px 30px rgba(0,0,0,.08)
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background: linear-gradient(120deg,var(--pink-50),var(--purple-50),var(--blue-50));
+      background-size:200% 200%
+    }
+    .container{max-width:960px;margin:0 auto;padding:56px 16px 40px}
+    .card{background:rgba(255,255,255,.7);backdrop-filter:saturate(1.1) blur(6px);border:1px solid #fbcfe8;border-radius:24px;box-shadow:var(--shadow)}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.7);padding:8px 12px;border:1px solid #fbcfe8;border-radius:20px;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .btn{display:inline-flex;gap:8px;align-items:center;border-radius:999px;border:1px solid #fbcfe8;background:#fff;padding:10px 14px;font:600 14px/1 system-ui;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,#f472b6,#a78bfa);color:#fff;border:none}
+    .btn:hover{box-shadow:0 6px 16px rgba(0,0,0,.10)}
+    h1{margin:0;font-size:40px;letter-spacing:-.02em}
+    h2{margin:0;font-size:22px}
+    p{margin:0}
+    header .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .section{padding:40px 0}
+    .divider{height:1px;background:linear-gradient(90deg,#fbcfe8,#ddd,#bfdbfe);flex:1}
+    .hero{padding:24px}
+    .grid{display:grid;gap:12px}
+    @media(min-width:640px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}.grid.cols-2{grid-template-columns:repeat(2,1fr)}}
+    figure{border-radius:16px;overflow:hidden;border:1px solid #fbcfe8;position:relative}
+    figure img{width:100%;height:160px;object-fit:cover;display:block;transition:transform .5s}
+    figure:hover img{transform:scale(1.05)}
+    figure figcaption{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:12px;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent)}
+    details{border:1px solid #fbcfe8;background:rgba(255,255,255,.65);border-radius:12px;padding:12px}
+    footer{color:#6b7280;font-size:12px;text-align:center;margin-top:24px}
+
+    /* Confeti */
+    #confetti{pointer-events:none;position:fixed;inset:0;overflow:hidden}
+    @keyframes confetti-fall{0%{transform:translateY(-10%) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.8}}
+  </style>
+</head>
+<body>
+  <div id="confetti"></div>
+
+  <header class="container">
+    <div class="head">
+      <div class="badge"><span>✨</span><span>Especial de cumpleaños</span></div>
+      <div class="row">
+        <button id="toggle-party" class="btn" aria-pressed="true">🎉 Modo chill</button>
+        <button id="share" class="btn" title="Compartir">🔗 Compartir</button>
+        <button id="print" class="btn" title="Imprimir o guardar PDF">🖨️ Imprimir/PDF</button>
+      </div>
+    </div>
+
+    <div class="card hero">
+      <div style="text-align:center">
+        <h1>¡Feliz cumple, <span id="nombre">Jess</span>! 🎂</h1>
+        <p id="frase" style="margin-top:8px;font-size:18px;color:#374151">Hoy celebramos a mi real, mi persona favorita.</p>
+        <div class="row" style="justify-content:center;margin-top:16px">
+          <div class="badge">💗 Amistad infinita</div>
+          <div class="badge">📸 Recuerdos</div>
+        </div>
+        <button id="gift-btn" class="btn primary" style="margin-top:20px">🎁 Abrir regalo</button>
+      </div>
+
+      <div id="gift-panel" style="display:none;margin-top:20px">
+        <div class="grid cols-2" style="gap:16px">
+          <div class="card" style="padding:16px;border-color:#fbcfe8">
+            <h3 style="margin:0 0 8px;font-size:18px">Carta para <span id="nombre2">Jess</span></h3>
+            <p id="carta" style="white-space:pre-line;color:#374151"></p>
+          </div>
+          <div class="card" style="padding:16px;border-color:#fbcfe8">
+            <h3 style="margin:0 0 8px;font-size:18px">Vale sorpresa</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div id="vale" class="card" style="flex:1;border:1px dashed #f9a8d4;background:#ffe4e6;padding:10px;color:#9d174d">Vale por helados y risas</div>
+              <button id="next-vale" class="btn">Otro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="row" style="gap:12px;align-items:center;margin-bottom:16px">
+        <div class="badge">📸</div>
+        <h2>Galería de recuerdos</h2>
+        <div class="divider"></div>
+      </div>
+      <p style="margin-bottom:12px;color:#374151;font-size:14px"> ✨</p>
+      <div id="galeria" class="grid cols-3"></div>
+    </section>
+
+    <section class="section">
+      <div class="row" style="gap:12px;align-items:center;margin-bottom:16px">
+        <div class="badge">✨</div>
+        <h2>Razones por las que <span id="nombre3">Jess</span> es top</h2>
+        <div class="divider"></div>
+      </div>
+      <ul id="razones" style="display:grid;gap:12px;grid-template-columns:1fr 1fr;padding:0;list-style:none"></ul>
+    </section>
+
+    <section class="section">
+      <div class="row" style="gap:12px;align-items:center;margin-bottom:16px">
+        <div class="badge">💖</div>
+        <h2>Brindis final</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="card" style="padding:20px;text-align:center">
+        <p style="font-size:18px;font-weight:600">Por más años celebrando juntos, <span id="nombre4">Jess</span> 🎉</p>
+        <p style="color:#374151;margin-top:4px">Hoy solo se admite felicidad, bailecito y foto con torta.</p>
+        <div style="margin-top:12px" class="row">
+          <a href="#galeria" class="btn">Ver recuerdos</a>
+          <button id="gift-btn-2" class="btn primary">🎁 Abrir regalo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <footer>TQM Gonza · <span id="year"></span></footer>
+  </footer>
+
+<script>
+// ========================= CONFIG (personaliza aquí) =========================
+const CONFIG = {
+  nombre: "Jess",
+  frase: "Hoy celebramos a mi real, mi persona favorita.",
+  carta: (nombre) => `Eyyy ${nombre} 💖\n\nGracias por estos años de amistad . \nA pesar de no vernos tan seguido, ten en cuenta que siempre tendras un amigo contigo, \ncomo dicen los amigos reales casi no tienen fotos juntos, y es cierto jsjsjs, solo pude encontrar algunas.\n Espero que logres cumplir todos tus sueños\nCon cariño infinito,\nGonza`,
+  vales: [
+    "Vale por helados y risas",
+    "Vale por un caramelo",
+    "Vale por un dia completo para dormir",
+    "Vale por un chupetin",
+    "Vale por tu comida favorita",
+  ],
+  fotos: [
+    "https://drive.google.com/thumbnail?id=1W016rlG-ndl6X_XxIfs9Hf1obH3GBa39&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1wwJxzFWMkW0dFR11cqzqtdLz2r76OSrQ&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1OnHfXASwPjBz1_ahbaHBTwyrc0I0NgzJ&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1r0FTR6sBon37tCmWeF5v5DszKATx1AhO&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1TEz6BSj_tAnp3utdMY6VehF_nbSbHRaV&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1naEVpG2LgD4Dn1SMpFn19BpgqxZzjJRa&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1E2ZV1yAd8yNAT7rwHwfettWxz6OKT2iN&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1b_iMHyqdByaN6L6sHbW_4gzm2fjEkCbJ&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1RJjAzN_F4lNaHNt6W0AvZNDN1L0yCZgq&sz=w1400",
+    "https://drive.google.com/thumbnail?id=1EL58XCwNW2AhTzZ1PlVDfpX1RI0f0MrG&sz=w1400"
+  ],
+  razones: [
+    "Te encanta dormir",
+    "Siempre está cuando la necesitas",
+    "Una persona amante de los gatos :)",
+    "La mejor cómplice de chistes que solo entendemos nosotros",
+  ],
+};
+
+// ============================== UTILIDADES ==================================
+function wrapIndex(i, len){ return ((i % len) + len) % len; }
+
+// ============================== ESTADO ======================================
+let party = true;          // ✅ encendido por defecto
+let giftOpen = false;      // panel cerrado por defecto
+let valeIndex = 0;         // ✅ empieza desde el primero
+
+// ============================== INICIO ======================================
+const $ = (s) => document.querySelector(s);
+const nombreEls = ["#nombre","#nombre2","#nombre3","#nombre4"].map($);
+const $frase = $("#frase");
+const $carta = $("#carta");
+const $vale = $("#vale");
+const $galeria = $("#galeria");
+const $razones = $("#razones");
+const $year = $("#year");
+
+function renderBasics(){
+  nombreEls.forEach(el => el.textContent = CONFIG.nombre);
+  $frase.textContent = CONFIG.frase;
+  $carta.textContent = CONFIG.carta(CONFIG.nombre);
+  $vale.textContent = CONFIG.vales[valeIndex];
+  $year.textContent = new Date().getFullYear();
+}
+
+function renderGaleria(){
+  $galeria.innerHTML = "";
+  CONFIG.fotos.forEach((src, i) => {
+    const fig = document.createElement('figure');
+    fig.innerHTML = `
+      <img src="${src}" alt="Recuerdo ${i+1}">
+      <figcaption>${CONFIG.nombre} & Gonza · #${i+1}</figcaption>`;
+    $galeria.appendChild(fig);
+  });
+}
+
+function renderRazones(){
+  $razones.innerHTML = "";
+  CONFIG.razones.forEach(txt => {
+    const li = document.createElement('li');
+    li.className = "card";
+    li.style.padding = "16px";
+    li.textContent = txt;
+    $razones.appendChild(li);
+  });
+}
+
+// ============================== CONFETI =====================================
+const confettiRoot = document.getElementById('confetti');
+const palette = ["#fbcfe8","#e9d5ff","#bfdbfe","#bbf7d0","#fde68a","#fecaca"];
+function spawnConfetti(){
+  if(!party) return;
+  const piece = document.createElement('span');
+  const size = 6 + Math.random()*10;
+  piece.style.cssText = `position:absolute;left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${palette[Math.floor(Math.random()*palette.length)]};
+    transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>0.5?"999px":"4px"};
+    animation:confetti-fall ${6+Math.random()*6}s ${Math.random()*4}s linear forwards;filter:drop-shadow(0 0 2px rgba(0,0,0,.05))`;
+  confettiRoot.appendChild(piece);
+  setTimeout(()=> piece.remove(), 12000);
+}
+setInterval(spawnConfetti, 120);
+
+// ============================== INTERACCIÓN =================================
+$("#toggle-party").addEventListener('click', () => {
+  party = !party;
+  $("#toggle-party").textContent = party ? "🎉 Modo chill" : "🎉 Modo fiesta";
+});
+
+["#gift-btn", "#gift-btn-2"].forEach(sel => {
+  $(sel).addEventListener('click', () => {
+    giftOpen = !giftOpen;
+    document.getElementById('gift-panel').style.display = giftOpen ? 'block' : 'none';
+    party = true; // re-activa confeti al abrir/cerrar
+  });
+});
+
+$("#next-vale").addEventListener('click', () => {
+  valeIndex = wrapIndex(valeIndex + 1, CONFIG.vales.length);
+  $vale.textContent = CONFIG.vales[valeIndex];
+});
+
+$("#share").addEventListener('click', async () => {
+  const text = `🎉 Feliz cumple, ${CONFIG.nombre}! — ${CONFIG.frase}`;
+  try{
+    if(navigator.share){
+      await navigator.share({ title:`Feliz cumple, ${CONFIG.nombre}`, text, url: location.href });
+    } else if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(`${text}\n${location.href}`);
+      alert('Copié el mensaje al portapapeles. ¡Pégalo donde quieras! ✨');
+    } else {
+      prompt('Copia este mensaje:', `${text}\n${location.href}`);
+    }
+  }catch(e){ console.warn(e); }
+});
+
+$("#print").addEventListener('click', () => window.print());
+
+// ============================== RENDER INICIAL ==============================
+renderBasics();
+renderGaleria();
+renderRazones();
+
+// ============================== TEST CASES ==================================
+(function tests(){
+  const results = [];
+  const assert = (cond, msg) => { results.push({msg, pass:!!cond}); if(!cond){ throw new Error('Test failed: '+msg);} };
+  // EXISTENTES (mantener intención)
+  assert(wrapIndex(0,5)===0, 'wrapIndex base');
+  assert(wrapIndex(4,5)===4, 'wrapIndex end');
+  assert(wrapIndex(5,5)===0, 'wrapIndex rollover');
+  assert(wrapIndex(-1,5)===4, 'wrapIndex negative');
+  assert(Array.isArray(CONFIG.vales) && CONFIG.vales.length>0, 'vales non-empty');
+  assert(Array.isArray(CONFIG.fotos) && CONFIG.fotos.every(s=>typeof s==='string' && s.length>0), 'fotos valid');
+  assert(typeof valeIndex === 'number', 'valeIndex is number');
+  // NUEVOS
+  assert(typeof CONFIG.nombre==='string' && CONFIG.nombre.length>0, 'nombre non-empty');
+  assert(CONFIG.carta(CONFIG.nombre).includes(CONFIG.nombre), 'carta mentions name');
+  for(let k=-10;k<=10;k++){ const v=wrapIndex(k,5); assert(v>=0 && v<5, 'wrapIndex in bounds'); }
+  assert(CONFIG.fotos.length>=3, 'fotos at least 3');
+  assert(party===true, 'party starts enabled');
+  assert(valeIndex===0, 'vale starts at first');
+  console.log('✅ Smoke tests passed', results);
+})();
+</script>
+</body>
+</html>
